@@ -1,15 +1,12 @@
 const router = require("express").Router();
 const Portfolio = require("../models/Portfolio");
 
-const {
-  verifyAccessTokenAndAdmin,
-  verifyAccessTokenAndAuthorization,
-} = require("./verifyAccessToken");
+const { verifyAccessTokenAndAuthorization } = require("./verifyAccessToken");
 
 //Get Portfolio lists
 router.get("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
   try {
-    const cont = await Portfolio.find({ email: req.body.email });
+    const cont = await Portfolio.find({ userId: req.params.id });
     res.status(200).json(cont);
   } catch (err) {
     err.message = "Portfolio not found";

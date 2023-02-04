@@ -7,7 +7,7 @@ const PortfolioSchema = new mongoose.Schema(
       unique: true, 
       required: true,
     },
-    email: {
+    userId: {
       type: String,
       required: true,
     },

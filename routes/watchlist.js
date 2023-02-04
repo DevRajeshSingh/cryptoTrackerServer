@@ -7,7 +7,7 @@ const { verifyAccessTokenAndAuthorization } = require("./verifyAccessToken");
 router.get("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
   try {
     const watchlist = await Watchlist.find({
-      id: req.params.id,
+      userId: req.params.id,
     });
     res.status(200).json(watchlist);
   } catch (err) {
@@ -18,13 +18,13 @@ router.get("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
 
 //Create Watchlist
 router.post("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
-  const newCat = new Watchlist(req.body);
   try {
-    const savedCat = await newCat.save();
-    res.status(200).json(savedCat);
-  } catch (err) {
-    err.message = "Something went wrong";
-    res.status(500).json(err);
+    const newWatchlist = new Watchlist(req.body);
+    const savedWatchlist = await newWatchlist.save();
+    res.status(200).json(savedWatchlist);
+  } catch (error) {
+    error.message = "Something went wrong";
+    res.status(500).json(error);
   }
 });
 
@@ -32,7 +32,7 @@ router.post("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
 router.put("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
   try {
     const updatedWatchlist = await Watchlist.findOneAndUpdate(
-      { email: req.body.email },
+      { userId: req.params.id },
       {
         $set: req.body,
       },
@@ -49,7 +49,7 @@ router.put("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
 router.delete("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
   try {
     const deletedWatchlist = await Watchlist.findOneAndDelete({
-      email: req.body.email,
+      userId: req.params.id,
     });
     res.status(200).json(deletedWatchlist);
   } catch (error) {

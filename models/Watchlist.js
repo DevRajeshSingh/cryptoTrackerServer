@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 //Watchlisted Item Schema
 const WatchlistedSchema = new mongoose.Schema(
   {
-    email: {
+    userId: {
       type: String,
       required: true,
       unique: true,
