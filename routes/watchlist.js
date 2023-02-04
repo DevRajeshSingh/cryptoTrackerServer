@@ -19,6 +19,14 @@ router.get("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
 //Create Watchlist
 router.post("/:id", verifyAccessTokenAndAuthorization, async (req, res) => {
   try {
+    //check if watchlist already exists
+    const watchlist = await Watchlist.findOne({
+      userId: req.params.id,
+    });
+    if (watchlist) {
+      return res.status(400).json({ message: "Watchlist already exists" });
+    }
+    //create new watchlist
     const newWatchlist = new Watchlist(req.body);
     const savedWatchlist = await newWatchlist.save();
     res.status(200).json(savedWatchlist);
